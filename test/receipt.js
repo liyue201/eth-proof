@@ -9,6 +9,10 @@ describe('Receipt GetAndVerify Against BlockHash', () => {
     // python offchain/proveth.py -n 20759076 -tr false  -i 1
     let blockHash = '0xe5da85264e8aa974e6044231c2384e66507f6f63296507046e1c2b0a271da26f'
     let txHash    = '0x1252c234095292f2f00568260e9cdf95409fda837d8c4f3bc08819fca696f89b'
+
+    //python offchain/proveth.py -n 7166532 -tr false  -i 13
+     //let blockHash = '0xf3f15e65894e9c09758c1db6c18575b36c550499e9e2304d3d352cf33e0176b9'
+     //let txHash    = '0x67cfe97a9bd2f0602d496e383996f375741609f31fd83a974edc1e8f665b21f7'
     let receipt   = await getAndVerify.receiptAgainstBlockHash(txHash, blockHash)
     //console.log("r ", toHex(encode(receipt.setOfLogs[0])))
 

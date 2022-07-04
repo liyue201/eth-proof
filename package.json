@@ -13,7 +13,7 @@
     "promisfy": "^1.2.0"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha --require should --timeout 25000"
+    "test": "node_modules/.bin/mocha --require should --timeout 50000"
   },
   "author": "zac mitton",
   "license": "MIT",

@@ -40,8 +40,10 @@ module.exports = class GetProof{
     let targetReceipt = await this.rpc.eth_getTransactionReceipt(txHash)
     if(!targetReceipt){ throw new Error("txhash/targetReceipt not found. (use Archive node)")}
 
+    console.log("transactionIndex", targetReceipt.transactionIndex)
+
     let rpcBlock = await this.rpc.eth_getBlockByHash(targetReceipt.blockHash, false)
-    console.log("rpcBlock", rpcBlock);
+    //console.log("rpcBlock", rpcBlock);
 
     let receipts = await Promise.all(rpcBlock.transactions.map((siblingTxHash) => {
       return this.rpc.eth_getTransactionReceipt(siblingTxHash)
@@ -57,6 +59,9 @@ module.exports = class GetProof{
 
     let [_,__,stack] = await promisfy(tree.findPath, tree)(encode(targetReceipt.transactionIndex))
 
+    console.log("stack", stack.toString())
+    let arrayProof = stack.map((trieNode)=>{ return trieNode.raw })
+    console.log("arrayProof", arrayProof)
     return {
       header:  Header.fromRpc(rpcBlock),
       receiptProof:  Proof.fromStack(stack),
