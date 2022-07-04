@@ -18,12 +18,20 @@ class GetAndVerify{
   }
   async receiptAgainstBlockHash(txHash, trustedBlockHash){
     let resp = await this.get.receiptProof(txHash)
-    let blockHashFromHeader = VerifyProof.getBlockHashFromHeader(resp.header)
-    if(!toBuffer(trustedBlockHash).equals(blockHashFromHeader)) throw new Error('BlockHash mismatch')
-    let receiptsRoot = VerifyProof.getReceiptsRootFromHeader(resp.header)
-    let receiptsRootFromProof = VerifyProof.getRootFromProof(resp.receiptProof)
-    if(!receiptsRoot.equals(receiptsRootFromProof)) throw new Error('ReceiptsRoot mismatch')
-    return VerifyProof.getReceiptFromReceiptProofAt(resp.receiptProof, resp.txIndex)
+    console.log("receiptProof", resp.receiptProof.toHex())
+    return true
+
+    // let blockHashFromHeader = VerifyProof.getBlockHashFromHeader(resp.header)
+    // console.log("blockHashFromHeader",blockHashFromHeader)
+    // console.log("blockHashFromHeader",toBuffer(trustedBlockHash))
+    //
+    // if(!toBuffer(trustedBlockHash).equals(blockHashFromHeader)) throw new Error('BlockHash mismatch')
+    //
+    // let receiptsRoot = VerifyProof.getReceiptsRootFromHeader(resp.header)
+    // let receiptsRootFromProof = VerifyProof.getRootFromProof(resp.receiptProof)
+    // if(!receiptsRoot.equals(receiptsRootFromProof)) throw new Error('ReceiptsRoot mismatch')
+    // return VerifyProof.getReceiptFromReceiptProofAt(resp.receiptProof, resp.txIndex)
+
   }
   async accountAgainstBlockHash(accountAddress, trustedBlockHash){
     let resp = await this.get.accountProof(accountAddress, trustedBlockHash)

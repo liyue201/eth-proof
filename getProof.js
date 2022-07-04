@@ -41,6 +41,7 @@ module.exports = class GetProof{
     if(!targetReceipt){ throw new Error("txhash/targetReceipt not found. (use Archive node)")}
 
     let rpcBlock = await this.rpc.eth_getBlockByHash(targetReceipt.blockHash, false)
+    console.log("rpcBlock", rpcBlock);
 
     let receipts = await Promise.all(rpcBlock.transactions.map((siblingTxHash) => {
       return this.rpc.eth_getTransactionReceipt(siblingTxHash)

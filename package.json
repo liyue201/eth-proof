@@ -8,6 +8,7 @@
     "eth-object": "^1.0.3",
     "eth-util-lite": "^1.0.1",
     "isomorphic-rpc": "^1.2.1",
+    "dotenv": "10.0.0",
     "merkle-patricia-tree": "github:zmitton/merkle-patricia-tree#build",
     "promisfy": "^1.2.0"
   },
