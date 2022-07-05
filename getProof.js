@@ -52,7 +52,7 @@ module.exports = class GetProof{
     let tree = new Tree();
 
     await Promise.all(receipts.map((siblingReceipt, index) => {
-      //console.log("siblingReceipt", siblingReceipt)
+      console.log("siblingReceipt", siblingReceipt)
       console.log("index", index)
       let siblingPath = encode(index)
       let receipt = Receipt.fromRpc(siblingReceipt);
