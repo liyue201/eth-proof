@@ -74,7 +74,7 @@ module.exports = class GetProof{
     let proof_blob = rlp.encode([
       2,
       Header.fromRpc(rpcBlock),
-      targetReceipt.transactionInde,
+      targetReceipt.transactionIndex,
       stack,
     ])
     console.log("proof_blob", proof_blob)
