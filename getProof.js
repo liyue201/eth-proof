@@ -4,6 +4,7 @@ const { promisfy } = require('promisfy')
 const Tree = require('merkle-patricia-tree')
 
 const Rpc  = require('isomorphic-rpc')
+import RLP from 'rlp'
 
 const { Header, Proof, Receipt, Transaction } = require('eth-object')
 
@@ -70,7 +71,7 @@ module.exports = class GetProof{
     //let arrayProof = stack.map((trieNode)=>{ return trieNode.raw })
     //console.log("arrayProof", arrayProof)
 
-    let proof_blob = encode([
+    let proof_blob = RLP.encode([
       2,
       Header.fromRpc(rpcBlock),
       targetReceipt.transactionInde,
