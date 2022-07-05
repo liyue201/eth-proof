@@ -57,10 +57,10 @@ module.exports = class GetProof{
       let siblingPath = encode(index)
       let receipt = Receipt.fromRpc(siblingReceipt);
       let serializedReceipt = receipt.serialize()
-      console.log("receipt", receipt.toString())
+      console.log("receipt", receipt)
 
       console.log("siblingPath", siblingPath)
-      console.log("serializedReceipt", serializedReceipt.toString())
+      console.log("serializedReceipt", serializedReceipt.)
       return promisfy(tree.put, tree)(siblingPath, serializedReceipt)
     }))
 
