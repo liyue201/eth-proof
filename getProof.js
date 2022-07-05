@@ -5,6 +5,7 @@ const Tree = require('merkle-patricia-tree')
 
 const Rpc  = require('isomorphic-rpc')
 const rlp = require('rlp');
+const { arrToBufArr, bufArrToArr } = require ('ethereumjs-util')
 
 const { Header, Proof, Receipt, Transaction } = require('eth-object')
 
@@ -71,12 +72,15 @@ module.exports = class GetProof{
     //let arrayProof = stack.map((trieNode)=>{ return trieNode.raw })
     //console.log("arrayProof", arrayProof)
 
-    let proof_blob = rlp.encode([
-      2,
-      Header.fromRpc(rpcBlock),
-      targetReceipt.transactionIndex,
-      stack,
-    ])
+    const bufferList = [Buffer.from('123', 'hex'), Buffer.from('456', 'hex')]
+    const proof_blob = rlp.encode(bufArrToArr(bufferList))
+
+    // let proof_blob = rlp.encode([
+    //   2,
+    //   Header.fromRpc(rpcBlock),
+    //   targetReceipt.transactionIndex,
+    //   stack,
+    //])
     console.log("proof_blob", proof_blob)
 
     return {
