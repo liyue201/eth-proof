@@ -1,4 +1,4 @@
-const {encode} = require('eth-util-lite')
+const {encode, toBuffer} = require('eth-util-lite')
 const {promisfy} = require('promisfy')
 
 const Tree = require('merkle-patricia-tree')
@@ -74,8 +74,8 @@ module.exports = class GetProof {
         let [_, __, stack] = await promisfy(tree.findPath, tree)(encode(targetReceipt.transactionIndex))
 
         console.log("stack", stack.toString())
-        //let arrayProof = stack.map((trieNode)=>{ return trieNode.raw })
-        //console.log("arrayProof", arrayProof)
+        let arrayProof = stack.map((trieNode)=>{ return trieNode.raw })
+        console.log("arrayProof", arrayProof)
 
         //const bufferList = [Buffer.from('123', 'hex'), Buffer.from('456', 'hex')]
         //const proof_blob = rlp.encode(bufArrToArr(bufferList))
@@ -83,9 +83,9 @@ module.exports = class GetProof {
             2,
             Header.fromRpc(rpcBlock),
             targetReceipt.transactionIndex,
-            stack,
+            arrayProof,
         ]
-        let proof_blob = rlp.encode(bufArrToArr(bufferList))
+        let proof_blob = rlp.encode(bufferList)
 
         console.log("proof_blob", proof_blob)
 
