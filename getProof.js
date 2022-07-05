@@ -67,8 +67,17 @@ module.exports = class GetProof{
     let [_,__,stack] = await promisfy(tree.findPath, tree)(encode(targetReceipt.transactionIndex))
 
     console.log("stack", stack.toString())
-    let arrayProof = stack.map((trieNode)=>{ return trieNode.raw })
-    console.log("arrayProof", arrayProof)
+    //let arrayProof = stack.map((trieNode)=>{ return trieNode.raw })
+    //console.log("arrayProof", arrayProof)
+
+    let proof_blob = encode([
+      2,
+      Header.fromRpc(rpcBlock),
+      targetReceipt.transactionInde,
+      stack,
+    ])
+    console.log("proof_blob", proof_blob)
+
     return {
       header:  Header.fromRpc(rpcBlock),
       receiptProof:  Proof.fromStack(stack),
