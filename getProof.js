@@ -88,6 +88,8 @@ module.exports = class GetProof {
         let proof_blob = rlp.encode(bufferList)
 
         console.log("proof_blob", proof_blob)
+        console.log("proof_blob", proof_blob.toString())
+
 
         return {
             header: Header.fromRpc(rpcBlock),
