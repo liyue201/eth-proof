@@ -6,13 +6,18 @@ const { encode, toHex } = require('eth-util-lite')
 describe('Receipt GetAndVerify Against BlockHash', () => {
 
   it('should be able to request a proof for 0xb53f7522 and verify it', async () => {
-    //
-    let blockHash = '0xe5da85264e8aa974e6044231c2384e66507f6f63296507046e1c2b0a271da26f'
-    let txHash    = '0x1252c234095292f2f00568260e9cdf95409fda837d8c4f3bc08819fca696f89b'
+    // bug: python offchain/proveth.py -n 20759076 -tr True  -i 1
+    //let blockHash = '0xe5da85264e8aa974e6044231c2384e66507f6f63296507046e1c2b0a271da26f'
+    //let txHash    = '0x1252c234095292f2f00568260e9cdf95409fda837d8c4f3bc08819fca696f89b'
 
      // python offchain/proveth.py -n 20779482 -tr True  -i 1
      //let blockHash = '0xd86a10cf146c964623d1d874770b0fac71e5e99bd61f21066ec35d908cbac9ad'
      //let txHash    = '0xb9299f9f24d5478040da7133bc2af1a62170f5755c0316a13ed60d8154e759a2'
+
+      // python offchain/proveth.py -n 20781267  -tr True  -i 1
+      let blockHash = '0x1ad3861c0cf43b8eea14d3c62312f86aeb60ed44aa04815d7f422722184cc575'
+      let txHash    = '0x6309fe69f1f3bf6721f0bf68ba1bba13cf93561dd8f719ad214fce78d21eca57'
+
     let receipt   = await getAndVerify.receiptAgainstBlockHash(txHash, blockHash)
     //console.log("r ", toHex(encode(receipt.setOfLogs[0])))
 
