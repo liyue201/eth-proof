@@ -60,7 +60,7 @@ module.exports = class GetProof{
       console.log("receipt", receipt)
 
       console.log("siblingPath", siblingPath)
-      console.log("serializedReceipt", serializedReceipt.)
+      console.log("serializedReceipt", serializedReceipt)
       return promisfy(tree.put, tree)(siblingPath, serializedReceipt)
     }))
 
