@@ -54,6 +54,10 @@ module.exports = class GetProof{
     await Promise.all(receipts.map((siblingReceipt, index) => {
       let siblingPath = encode(index)
       let serializedReceipt = Receipt.fromRpc(siblingReceipt).serialize()
+      console.log("siblingReceipt", siblingReceipt)
+      console.log("index", index)
+      console.log("siblingPath", siblingPath)
+      console.log("serializedReceipt", serializedReceipt)
       return promisfy(tree.put, tree)(siblingPath, serializedReceipt)
     }))
 

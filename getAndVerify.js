@@ -18,7 +18,7 @@ class GetAndVerify{
   }
   async receiptAgainstBlockHash(txHash, trustedBlockHash){
     let resp = await this.get.receiptProof(txHash)
-    console.log("receiptProof", resp.receiptProof.toHex())
+    //console.log("receiptProof", resp.receiptProof.toHex())
     return true
 
     // let blockHashFromHeader = VerifyProof.getBlockHashFromHeader(resp.header)
