@@ -119,14 +119,14 @@ module.exports = class GetProof {
         let tree = new Tree();
 
         await Promise.all(receipts.map((siblingReceipt, index) => {
-            console.log("siblingReceipt", siblingReceipt)
-            console.log("index", index)
+            //console.log("siblingReceipt", siblingReceipt)
+            //console.log("index", index)
             let siblingPath = encode(index)
             let receipt = Receipt.fromRpc(siblingReceipt);
             let serializedReceipt = receipt.serialize()
-            console.log("receipt", receipt)
+            //console.log("receipt", receipt)
 
-            console.log("siblingPath", siblingPath)
+            //console.log("siblingPath", siblingPath)
             //console.log("serializedReceipt", serializedReceipt )
             return promisfy(tree.put, tree)(siblingPath, serializedReceipt)
         }))
