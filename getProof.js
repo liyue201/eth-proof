@@ -90,12 +90,61 @@ module.exports = class GetProof {
         console.log("proof_blob", proof_blob)
         console.log("proof_blob", proof_blob.toString("hex"))
 
-
         return {
             header: Header.fromRpc(rpcBlock),
             receiptProof: Proof.fromStack(stack),
             txIndex: targetReceipt.transactionIndex,
         }
+    }
+
+    async receiptProof2(txHash) {
+        let targetReceipt = await this.rpc.eth_getTransactionReceipt(txHash)
+        if (!targetReceipt) {
+            throw new Error("txhash/targetReceipt not found. (use Archive node)")
+        }
+
+        console.log("transactionIndex", targetReceipt.transactionIndex)
+
+        let rpcBlock = await this.rpc.eth_getBlockByHash(targetReceipt.blockHash, false)
+        //console.log("rpcBlock", rpcBlock);
+
+        let receipts = await Promise.all(rpcBlock.transactions.map((siblingTxHash) => {
+            return this.rpc.eth_getTransactionReceipt(siblingTxHash)
+        }))
+
+        let tree = new Tree();
+
+        await Promise.all(receipts.map((siblingReceipt, index) => {
+            console.log("siblingReceipt", siblingReceipt)
+            console.log("index", index)
+            let siblingPath = encode(index)
+            let receipt = Receipt.fromRpc(siblingReceipt);
+            let serializedReceipt = receipt.serialize()
+            console.log("receipt", receipt)
+
+            console.log("siblingPath", siblingPath)
+            //console.log("serializedReceipt", serializedReceipt )
+            return promisfy(tree.put, tree)(siblingPath, serializedReceipt)
+        }))
+
+        let [_, __, stack] = await promisfy(tree.findPath, tree)(encode(targetReceipt.transactionIndex))
+
+        console.log("stack", stack.toString())
+        let arrayProof = stack.map((trieNode)=>{ return trieNode.raw })
+        console.log("arrayProof", arrayProof)
+
+        const bufferList = [
+            2,
+            Header.fromRpc(rpcBlock),
+            targetReceipt.transactionIndex,
+            arrayProof,
+        ]
+        let proof_blob = rlp.encode(bufferList)
+
+        //console.log("proof_blob", proof_blob)
+        console.log("proof_blob", proof_blob.toString("hex"))
+
+        return proof_blob
     }
 
     async accountProof(address, blockHash = null) {

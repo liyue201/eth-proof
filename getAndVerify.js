@@ -19,7 +19,6 @@ class GetAndVerify{
   async receiptAgainstBlockHash(txHash, trustedBlockHash){
     let resp = await this.get.receiptProof(txHash)
     //console.log("receiptProof", resp.receiptProof.toHex())
-    return true
 
     // let blockHashFromHeader = VerifyProof.getBlockHashFromHeader(resp.header)
     // console.log("blockHashFromHeader",blockHashFromHeader)
@@ -31,8 +30,12 @@ class GetAndVerify{
     // let receiptsRootFromProof = VerifyProof.getRootFromProof(resp.receiptProof)
     // if(!receiptsRoot.equals(receiptsRootFromProof)) throw new Error('ReceiptsRoot mismatch')
     // return VerifyProof.getReceiptFromReceiptProofAt(resp.receiptProof, resp.txIndex)
-
   }
+
+  async getReceiptPoof(txHash){
+    return await this.get.receiptProof(txHash)
+  }
+
   async accountAgainstBlockHash(accountAddress, trustedBlockHash){
     let resp = await this.get.accountProof(accountAddress, trustedBlockHash)
     let blockHashFromHeader = VerifyProof.getBlockHashFromHeader(resp.header)
