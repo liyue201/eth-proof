@@ -134,9 +134,9 @@ module.exports = class GetProof {
         let [_, __, stack] = await promisfy(tree.findPath, tree)(encode(targetReceipt.transactionIndex))
 
         console.log("stack", stack.toString())
-        // let arrayProof = stack.map((trieNode) => {
-        //     return trieNode.raw
-        // })
+        let arrayProof = stack.map((trieNode) => {
+            return trieNode.raw
+        })
         // console.log("arrayProof", arrayProof)
 
         const bufferList = [
