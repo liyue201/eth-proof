@@ -25,6 +25,11 @@ class GetAndVerify{
     if(!receiptsRoot.equals(receiptsRootFromProof)) throw new Error('ReceiptsRoot mismatch')
     return VerifyProof.getReceiptFromReceiptProofAt(resp.receiptProof, resp.txIndex)
   }
+
+  async getReceiptPoof(txHash){
+    return await this.get.receiptProof2(txHash)
+  }
+
   async accountAgainstBlockHash(accountAddress, trustedBlockHash){
     let resp = await this.get.accountProof(accountAddress, trustedBlockHash)
     let blockHashFromHeader = VerifyProof.getBlockHashFromHeader(resp.header)
