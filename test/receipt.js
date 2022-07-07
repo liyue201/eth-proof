@@ -1,5 +1,6 @@
 const {GetAndVerify} = require('./../index')
 require("dotenv").config({path: ".env"});
+const assert = require('assert').strict;
 const getAndVerify = new GetAndVerify(process.env.ETHPROOFENDPOINT)
 const {encode, toHex} = require('eth-util-lite')
 
