@@ -19,9 +19,17 @@ class GetAndVerify{
   async receiptAgainstBlockHash(txHash, trustedBlockHash){
     let resp = await this.get.receiptProof(txHash)
     let blockHashFromHeader = VerifyProof.getBlockHashFromHeader(resp.header)
+    console.log("blockhash: ", blockHashFromHeader.toString("hex"))
+
     if(!toBuffer(trustedBlockHash).equals(blockHashFromHeader)) throw new Error('BlockHash mismatch')
+
     let receiptsRoot = VerifyProof.getReceiptsRootFromHeader(resp.header)
+    console.log("receiptsRoot: ", receiptsRoot.toString("hex"))
+
     let receiptsRootFromProof = VerifyProof.getRootFromProof(resp.receiptProof)
+
+    console.log("receiptsRootFromProof: ", receiptsRootFromProof.toString("hex"))
+
     if(!receiptsRoot.equals(receiptsRootFromProof)) throw new Error('ReceiptsRoot mismatch')
     return VerifyProof.getReceiptFromReceiptProofAt(resp.receiptProof, resp.txIndex)
   }
