@@ -48,6 +48,7 @@ module.exports = class GetProof {
         }
 
         let rpcBlock = await this.rpc.eth_getBlockByHash(targetReceipt.blockHash, false)
+        console.log("rpcBlock", rpcBlock);
 
         let receipts = await Promise.all(rpcBlock.transactions.map((siblingTxHash) => {
             return this.rpc.eth_getTransactionReceipt(siblingTxHash)
