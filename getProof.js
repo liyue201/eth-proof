@@ -156,7 +156,7 @@ module.exports = class GetProof {
         const bufferList = [
             2,
             Header.fromRpc(rpcBlock),
-            targetReceipt.transactionIndex,
+            toBuffer(targetReceipt.transactionIndex),
             arrayProof,
         ]
         let proof_blob = rlp.encode(bufferList)
