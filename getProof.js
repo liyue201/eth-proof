@@ -7,7 +7,7 @@ const Rpc = require('isomorphic-rpc')
 const rlp = require('rlp');
 const {arrToBufArr, bufArrToArr} = require('ethereumjs-util')
 
-const {Header, Proof, Receipt, Transaction} = require('eth-object')
+const {Header, Proof, Receipt, Transaction, Header1559} = require('eth-object')
 
 
 module.exports = class GetProof {
@@ -58,14 +58,27 @@ module.exports = class GetProof {
 
         await Promise.all(receipts.map((siblingReceipt, index) => {
             let siblingPath = encode(index)
-            let serializedReceipt = Receipt.fromRpc(siblingReceipt).serialize()
+
+            let receipt = Receipt.fromRpc(siblingReceipt)
+
+            let serializedReceipt;
+
+            console.log("receipt", receipt)
+            if (siblingReceipt.type != "0x0") {
+                let a = toBuffer(siblingReceipt.type)
+                let b = receipt.serialize()
+                serializedReceipt = Buffer.concat([a, b])
+            }else {
+                serializedReceipt = receipt.serialize()
+            }
+
             return promisfy(tree.put, tree)(siblingPath, serializedReceipt)
         }))
 
         let [_, __, stack] = await promisfy(tree.findPath, tree)(encode(targetReceipt.transactionIndex))
 
         return {
-            header: Header.fromRpc(rpcBlock),
+            header: Header1559.fromRpc(rpcBlock),
             receiptProof: Proof.fromStack(stack),
             txIndex: targetReceipt.transactionIndex,
         }
@@ -127,7 +140,7 @@ module.exports = class GetProof {
             let serializedReceipt = receipt.serialize()
             //console.log("receipt", receipt)
 
-            //console.log("siblingPath", siblingPath)
+            console.log("siblingPath", siblingPath)
             //console.log("serializedReceipt", serializedReceipt )
             return promisfy(tree.put, tree)(siblingPath, serializedReceipt)
         }))
