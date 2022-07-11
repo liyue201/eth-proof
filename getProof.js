@@ -57,7 +57,20 @@ module.exports = class GetProof {
 
         await Promise.all(receipts.map((siblingReceipt, index) => {
             let siblingPath = encode(index)
-            let serializedReceipt = Receipt.fromRpc(siblingReceipt).serialize()
+
+            let receipt = Receipt.fromRpc(siblingReceipt)
+
+            let serializedReceipt;
+
+            //console.log("receipt", receipt)
+            if (siblingReceipt.type != "0x0") {
+                let a = toBuffer(siblingReceipt.type)
+                let b = receipt.serialize()
+                serializedReceipt = Buffer.concat([a, b])
+            }else {
+                serializedReceipt = receipt.serialize()
+            }
+
             return promisfy(tree.put, tree)(siblingPath, serializedReceipt)
         }))
 
@@ -119,15 +132,21 @@ module.exports = class GetProof {
         let tree = new Tree();
 
         await Promise.all(receipts.map((siblingReceipt, index) => {
-            //console.log("siblingReceipt", siblingReceipt)
-            //console.log("index", index)
             let siblingPath = encode(index)
-            let receipt = Receipt.fromRpc(siblingReceipt);
-            let serializedReceipt = receipt.serialize()
-            //console.log("receipt", receipt)
 
-            //console.log("siblingPath", siblingPath)
-            //console.log("serializedReceipt", serializedReceipt )
+            let receipt = Receipt.fromRpc(siblingReceipt)
+
+            let serializedReceipt;
+
+            //console.log("receipt", receipt)
+            if (siblingReceipt.type != "0x0") {
+                let a = toBuffer(siblingReceipt.type)
+                let b = receipt.serialize()
+                serializedReceipt = Buffer.concat([a, b])
+            }else {
+                serializedReceipt = receipt.serialize()
+            }
+
             return promisfy(tree.put, tree)(siblingPath, serializedReceipt)
         }))
 
@@ -142,7 +161,7 @@ module.exports = class GetProof {
         const bufferList = [
             2,
             Header.fromRpc(rpcBlock),
-            targetReceipt.transactionIndex,
+            toBuffer(targetReceipt.transactionIndex),
             arrayProof,
         ]
         let proof_blob = rlp.encode(bufferList)
